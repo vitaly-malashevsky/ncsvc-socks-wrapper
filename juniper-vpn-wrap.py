@@ -101,9 +101,9 @@ class juniper_vpn_wrapper(object):
                               max_time=1)
 
         # Want debugging messages?
-        #self.br.set_debug_http(True)
-        #self.br.set_debug_redirects(True)
-        #self.br.set_debug_responses(True)
+        # self.br.set_debug_http(True)
+        # self.br.set_debug_redirects(True)
+        # self.br.set_debug_responses(True)
 
         self.user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'
         self.br.addheaders = [('User-agent', self.user_agent)]
@@ -221,9 +221,10 @@ class juniper_vpn_wrapper(object):
         self.br.select_form(nr=0)
         self.br.form['username'] = self.username
         self.br.form['password'] = self.password
+        self.br.form['password#2'] = 'push'
         # Untested, a list of availables realms is provided when this
         # is necessary.
-        # self.br.form['realm'] = [realm]
+        # self.br.form['realm'] = 'ADSK-NC_DUO'
         self.r = self.br.submit()
 
     def action_key(self):
@@ -328,7 +329,7 @@ class juniper_vpn_wrapper(object):
         self.tncc_process = subprocess.Popen(['java',
             '-classpath', self.tncc_jar + ':' + self.plugin_jar,
             self.class_name,
-            'log_level', '2',
+            'log_level', '3',
             'postRetries', '6',
             'ivehost', self.vpn_host,
             'home_dir', os.path.expanduser('~'),
@@ -387,7 +388,7 @@ class juniper_vpn_wrapper(object):
             '-c', 'DSID=' + dsid_cookie.value,
             '-f', self.certfile,
             '-p', str(self.socks_port),
-            '-l', '0',
+            '-l', '2',
             ], env={'LD_PRELOAD': self.ncsvc_preload})
         ret = p.wait()
         # 9 - certificate mismatch
